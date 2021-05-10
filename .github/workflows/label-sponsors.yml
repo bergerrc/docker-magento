@@ -1,9 +1,9 @@
 name: Label sponsors
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
   issues:
-    types: [opened]
+    types: [closed]
 jobs:
   build:
     name: is-sponsor-label
