@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./www:/srv/www
+      - ./conf:/etc/nginx/conf.d
+    networks:
+      - www
+    depends_on:
+      - phpfpm
+          
+  phpfpm:
+    image: markoshust/php:fpm-alpine
+    volumes:
+      - ./www:/srv/www
+    networks:
+      - www
+    env_file: env/db.env
+    depends_on:
+      - mysql
+
+  mysql:
+    image: percona:5.7
+    command: --max_allowed_packet=64M
+    ports:
+      - "3306:3306"
+    env_file: env/db.env
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - www
+
+volumes:
+  dbdata:
+
+networks:
+  www:
