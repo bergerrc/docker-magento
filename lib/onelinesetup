@@ -1,11 +1,21 @@
 #!/bin/bash
 DOMAIN=${1:-magento2.test}
-VERSION=${2:-2.4.0}
+VERSION=${2:-2.4.2}
 
-curl -s https://raw.githubusercontent.com/markshust/docker-magento/master/lib/template | bash
+curl -s https://raw.githubusercontent.com/bergerrc/docker-magento/master/lib/template | bash
 bin/download $VERSION
 
 echo "Your system password has been requested to add an entry to /etc/hosts..."
 echo "127.0.0.1 ::1 $DOMAIN" | sudo tee -a /etc/hosts
 
 bin/setup $DOMAIN
+
+if [ ! -f './env/db.env' ] then
+    cp './env/db.env.sample' './env/db.env'
+fi
+if [ ! -f './env/magento.env' ] then
+    cp './env/magento.env.sample' './env/magento.env'
+fi
+if [ ! -f './src/auth.json' ] then
+    cp './src/auth.json.sample' './src/auth.json'
+fi
