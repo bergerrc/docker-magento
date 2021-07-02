@@ -11,4 +11,3 @@ mv compose/.vscode ./
 rm -rf compose
 git remote remove docker-magento
 git reset HEAD compose/
-chmod +x ./bin/
