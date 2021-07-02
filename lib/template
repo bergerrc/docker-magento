@@ -1,9 +1,14 @@
 #!/bin/bash
-git init -qqq
-git remote add origin https://github.com/bergerrc/docker-magento
-git fetch origin -qqq
-git checkout origin/master -- compose
+#git init -qqq
+REMOTE_URL=$(git remote -v | cut -f2 | cut -d'(' -f1)
+REMOTE_NAME=$(git remote -v | cut -f1)
+REMOTE_BRANCH=$(git status| head -n 1 | cut -d' ' -f3)
+git remote add docker-magento https://github.com/bergerrc/docker-magento
+git fetch docker-magento
+git checkout docker-magento/master -- compose
 mv compose/bin/* ./bin/
 mv compose/.vscode ./
-rm -rf compose .git
-git init
+rm -rf compose
+git remote remove docker-magento
+git reset HEAD compose/
+chmod +x ./bin/
